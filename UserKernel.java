@@ -112,4 +112,19 @@ public class UserKernel extends ThreadedKernel {
 
     // dummy variables to make javac smarter
     private static Coff dummy1 = null;
+    
+    /**
+     * TODO: create functional global file descriptor
+     * This is not a top priority
+     */
+    public class GLOBAL_FILE_DESCRIPTOR {
+    	public int numRef;
+    	public boolean beingMurdered;
+    	public String fileName;
+    	
+    	public GLOBAL_FILE_DESCRIPTOR(String fileName) {
+    		numRef = 1;
+    		
+    	}
+    }
 }

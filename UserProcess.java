@@ -339,16 +339,47 @@ public class UserProcess {
      * Handle the halt() system call. 
      */
     private int handleHalt() {
-
-	Machine.halt();
+    	/*TODO 
+    	 * set proper user process variable
+    	 */
+    	if(userProcess# == 1) {
+    		Machine.halt();
 	
-	Lib.assertNotReached("Machine.halt() did not halt machine!");
-	return 0;
+    		Lib.assertNotReached("Machine.halt() did not halt machine!");
+    		return 0;
+    	} else {
+    		return -1;
+    	}
+    }
+    
+    /**
+     * Since Creat and Open are almost identical, we will be
+     * using a single method with a create boolean to differentiate between
+     * creat and open. they will pass their pointer value off to a 
+     * openFile method as long with a true or false to creat or open, respectively.
+     */
+    private int handleCreat(int filePointer) {
+    	return openFile(filePointer, true);
+    }
+    
+    
+    private int handleOpen(int filePointer) {
+    	return openFile(filePointer, false);
+    }
+    
+    
+   /** TODO: make sure that the if it is being halted it does not open anymore files
+    *  so if the toKill boolean is true do nothing
+    * This method will create new files if the boolean variable create in true
+    * and open files if false. 
+    */
+    private int openFile(int filePointer, boolean create) {
+    	
     }
 
 
     private static final int
-        syscallHalt = 0,
+    syscallHalt = 0,
 	syscallExit = 1,
 	syscallExec = 2,
 	syscallJoin = 3,
@@ -428,6 +459,38 @@ public class UserProcess {
 		      Processor.exceptionNames[cause]);
 	    Lib.assertNotReached("Unexpected exception");
 	}
+    }
+    
+    private class localFileDescriptor{
+    	private String fileName;
+    	private OpenFile file;
+    	private int IOpos;
+    	private int toKill;
+    }
+    
+    /** TODO: fix the localFileDescriptorArray.length
+     * This method will return the index of the file name or a -1 if it does not exist
+     */
+    private int findFileDescriptoByName(String name) {
+    	for(int i = 0; i < localFileDescriptorArray.length(); i++) {
+    		if (localFileDescriptorArray[i].name == name)
+    			return i;
+    	}
+    	return -1;
+    }
+    
+    /**
+     * This method will return the first availeble position in the filedescriptor position
+     * in the localFileDescriptorArray, if there is no available position it will return a
+     * -1.
+     */
+    private int findEmptyFileDescriptor() {
+    	for(int i = 0; i < localFileDescriptorArray.length(); i++) {
+    		if(localFileDescriptorArray[i].name == null) {
+    			return i;
+    		}
+    	}
+    	return -1;
     }
 
     /** The program being run by this process. */
