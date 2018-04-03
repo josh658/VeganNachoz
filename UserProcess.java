@@ -461,12 +461,28 @@ public class UserProcess {
 	}
     }
     
-    private class localFileDescriptor{
-    	private String fileName;
-    	private OpenFile file;
-    	private int IOpos;
-    	private int toKill;
-    }
+	
+        /**
+	*this Class is made to be able to store file descriptors into the array
+	*TODO:in the constructor check if it is possible to do so. this will check the array
+	*	to make sure that there is no file with the same name, and that there is an open spot, 
+	*	to save time look to see if there is an open spot first then look to see if there is a
+	*	openFile of the same name. in the other hand creat and open will check the global array
+	*	to see if the file you are trying to open or creat is not in the dead pool.
+	*	make sure that the global file descriptor array is aware of 
+	*	of everything going on. to do so update the number of references of the global then
+	*	then.
+	*
+	*/
+	private class localFileDescriptor{
+		private String fileName;
+   		private OpenFile file;
+   		private int IOpos;
+   		private boolean toKill;
+		localFileDescriptor(int filePointer){    
+	  }
+	    
+  }
     
     /** TODO: fix the localFileDescriptorArray.length
      * This method will return the index of the file name or a -1 if it does not exist
